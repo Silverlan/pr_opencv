@@ -1,17 +1,27 @@
-# Add your custom setup steps here. The following variables are available:
-# generator: The CMake generator that has been chosen
-# build_config: The build configuration (e.g. "RelWithDebInfo")
-# moduleUrl: The git-url to this module
-# moduleDir: The directory where the files for this module are located
-# root: Root location of the Pragma files
-# build_dir: Location of the Pragma build directory
-# deps_dir: Location of dependencies required for building
-# install_dir: Location of the Pragma installation directory
+import os
+import subprocess
+from sys import platform
+from pathlib import Path
 
-# There are also several output variables available:
-# cmake_args: Array of CMake arguments to use for the configuration. Usage example:
-# cmake_args += ["-DBUILD_TESTING=OFF"]
-# additional_build_targets: Array of CMake targets that should be built in the build step. Usage example:
-# additional_build_targets += ["zlib"]
+os.chdir(deps_dir)
 
-# To see a full list of all available variables (and functions), check out the "execbuildscript" function in the "pragma/build_scripts/build.py" python script.
+########## OpenCV ##########
+os.chdir(deps_dir)
+opencv_root = deps_dir +"/opencv"
+if not Path(opencv_root).is_dir():
+    print_msg("opencv not found. Downloading...")
+    git_clone("https://github.com/opencv/opencv.git")
+
+os.chdir(opencv_root)
+subprocess.run(["git","reset","--hard","725e440"],check=True)
+
+print_msg("Build opencv")
+mkdir("build",cd=True)
+
+cmake_configure("..",generator)
+cmake_build("Release",["opencv_imgproc","opencv_imgcodecs"])
+
+cmake_args.append("-DDEPENDENCY_OPENCV_INCLUDE=" +opencv_root +"/include")
+cmake_args.append("-DDEPENDENCY_OPENCV_MODULE_LOCATION=" +opencv_root +"/modules")
+cmake_args.append("-DDEPENDENCY_OPENCV_BUILD_INCLUDE=" +opencv_root +"/build")
+cmake_args.append("-DDEPENDENCY_OPENCV_LIBRARY_LOCATION=" +opencv_root +"/build")
