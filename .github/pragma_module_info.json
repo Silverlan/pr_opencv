@@ -1,5 +1,6 @@
 {
     "name": "OpenCV",
     "module_name": "pr_opencv",
-    "install_directory": "modules/opencv/"
+    "install_directory": "modules/opencv/",
+    "release_directory": "modules/opencv/"
 }

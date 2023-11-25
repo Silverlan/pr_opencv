@@ -34,6 +34,11 @@ jobs:
         id: module-info
         uses: Silverlan/pr_module_template/github_actions/get_module_info@main
 
+      - name: Install numpy
+        shell: bash
+        run: |
+          pip install numpy
+          
       - name: Build Module
         id: build-module
         uses: Silverlan/pragma/github_actions/build_generic_module@master
@@ -43,8 +48,13 @@ jobs:
       - name: Create Release Files
         shell: bash
         run: |
-          mkdir -p release/${{ steps.module-info.outputs.install_directory }}
-          cp "${{ steps.build-module.outputs.install-dir }}/modules/lib${{ steps.module-info.outputs.module_name }}.so" "release/${{ steps.module-info.outputs.install_directory }}"
+          if [ "${{ steps.module-info.outputs.release_directory }}" != "DEFAULT" ]; then
+            mkdir -p "release/${{ steps.module-info.outputs.release_directory }}"
+            cp -a "${{ steps.build-module.outputs.install-dir }}/${{ steps.module-info.outputs.release_directory }}." "release/${{ steps.module-info.outputs.release_directory }}"
+          else
+            mkdir -p "release/${{ steps.module-info.outputs.install_directory }}"
+            cp "${{ steps.build-module.outputs.install-dir }}/${{ steps.module-info.outputs.install_directory }}lib${{ steps.module-info.outputs.module_name }}.so" "release/${{ steps.module-info.outputs.install_directory }}"
+          fi
 
       - name: Release Binaries
         uses: Silverlan/common_actions/release_nightly_binaries@main
