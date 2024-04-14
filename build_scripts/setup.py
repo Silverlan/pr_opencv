@@ -18,7 +18,7 @@ subprocess.run(["git","reset","--hard","725e440"],check=True)
 print_msg("Build opencv")
 mkdir("build",cd=True)
 
-cmake_configure("..",generator,msvc_cmake_args)
+cmake_configure("..",generator)
 cmake_build("Release",["opencv_imgproc","opencv_imgcodecs"])
 
 cmake_args.append("-DDEPENDENCY_OPENCV_INCLUDE=" +opencv_root +"/include")
