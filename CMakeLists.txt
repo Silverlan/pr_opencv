@@ -1,18 +1,15 @@
-cmake_minimum_required(VERSION 3.12)
-
-include("./CMakeShared.txt")
+include(${CMAKE_SOURCE_DIR}/cmake/pr_common.cmake)
 
 set(PROJ_NAME pr_opencv)
+pr_add_library(${PROJ_NAME} SHARED)
 
-project(${PROJ_NAME} CXX)
+pr_add_dependency(${PROJ_NAME} shared TARGET PUBLIC)
 
-add_include_dir(opencv_build)
-add_include_dir(opencv)
-link_external_library(util_image)
+pr_add_headers(${PROJ_NAME} "include/")
+pr_add_sources(${PROJ_NAME} "src/")
 
-link_generic_module_libraries()
-register_pragma_module(${PROJ_NAME})
-
+target_include_directories(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_BUILD_INCLUDE}")
+target_include_directories(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_INCLUDE}")
 target_include_directories(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_MODULE_LOCATION}/video/include")
 target_include_directories(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_MODULE_LOCATION}/stitching/include")
 target_include_directories(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_MODULE_LOCATION}/photo/include")
@@ -29,19 +26,20 @@ target_include_directories(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_MODULE_LOCA
 target_include_directories(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_MODULE_LOCATION}/core/include")
 
 if(WIN32)
-    target_link_libraries(${PROJ_NAME} "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/Release/${OS_LIB_BIN_PRE}opencv_imgproc470${OS_LIB_SHARED_EXT}")
-    target_link_libraries(${PROJ_NAME} "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/Release/${OS_LIB_BIN_PRE}opencv_core470${OS_LIB_SHARED_EXT}")
-    target_link_libraries(${PROJ_NAME} "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/Release/${OS_LIB_BIN_PRE}opencv_imgcodecs470${OS_LIB_SHARED_EXT}")
+    target_link_libraries(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/Release/${OS_LIB_BIN_PRE}opencv_imgproc470${OS_LIB_SHARED_EXT}")
+    target_link_libraries(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/Release/${OS_LIB_BIN_PRE}opencv_core470${OS_LIB_SHARED_EXT}")
+    target_link_libraries(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/Release/${OS_LIB_BIN_PRE}opencv_imgcodecs470${OS_LIB_SHARED_EXT}")
 else()
 
 if(is_multi_config)
-
-    target_link_libraries(${PROJ_NAME} "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/Release/${OS_LIB_BIN_PRE}opencv_imgproc${OS_LIB_SHARED_EXT}")
-    target_link_libraries(${PROJ_NAME} "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/Release/${OS_LIB_BIN_PRE}opencv_core${OS_LIB_SHARED_EXT}")
-    target_link_libraries(${PROJ_NAME} "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/Release/${OS_LIB_BIN_PRE}opencv_imgcodecs${OS_LIB_SHARED_EXT}")
+    target_link_libraries(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/Release/${OS_LIB_BIN_PRE}opencv_imgproc${OS_LIB_SHARED_EXT}")
+    target_link_libraries(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/Release/${OS_LIB_BIN_PRE}opencv_core${OS_LIB_SHARED_EXT}")
+    target_link_libraries(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/Release/${OS_LIB_BIN_PRE}opencv_imgcodecs${OS_LIB_SHARED_EXT}")
 else()
-    target_link_libraries(${PROJ_NAME} "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/${OS_LIB_BIN_PRE}opencv_imgproc${OS_LIB_SHARED_EXT}")
-    target_link_libraries(${PROJ_NAME} "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/${OS_LIB_BIN_PRE}opencv_core${OS_LIB_SHARED_EXT}")
-    target_link_libraries(${PROJ_NAME} "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/${OS_LIB_BIN_PRE}opencv_imgcodecs${OS_LIB_SHARED_EXT}")
+    target_link_libraries(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/${OS_LIB_BIN_PRE}opencv_imgproc${OS_LIB_SHARED_EXT}")
+    target_link_libraries(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/${OS_LIB_BIN_PRE}opencv_core${OS_LIB_SHARED_EXT}")
+    target_link_libraries(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/${OS_LIB_BIN_PRE}opencv_imgcodecs${OS_LIB_SHARED_EXT}")
     endif()
 endif()
+
+pr_finalize(${PROJ_NAME})
