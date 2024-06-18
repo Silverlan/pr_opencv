@@ -1,18 +1,12 @@
-pr_install_create_directory(modules/pr_opencv)
-pr_install_targets(pr_opencv INSTALL_DIR "modules/pr_opencv/")
+set(INSTALL_PATH "modules/opencv")
+pr_install_create_directory("${INSTALL_PATH}")
+pr_install_targets(pr_opencv INSTALL_DIR "${INSTALL_PATH}")
 
 if(WIN32)
-    pr_install_files(
-        "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/bin/Release/${OS_LIB_BIN_PRE}opencv_imgproc470${OS_LIB_BIN_EXT}"
-        "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/bin/Release/${OS_LIB_BIN_PRE}opencv_core470${OS_LIB_BIN_EXT}"
-        "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/bin/Release/${OS_LIB_BIN_PRE}opencv_imgcodecs470${OS_LIB_BIN_EXT}"
-        INSTALL_DIR "modules/pr_opencv/"
-    )
+    set(BIN_DIR "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/bin/Release/")
 else()
-    pr_install_files(
-        "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/${OS_LIB_BIN_PRE}opencv_imgproc${OS_LIB_BIN_EXT}"
-        "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/${OS_LIB_BIN_PRE}opencv_core${OS_LIB_BIN_EXT}"
-        "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/${OS_LIB_BIN_PRE}opencv_imgcodecs${OS_LIB_BIN_EXT}"
-        INSTALL_DIR "modules/pr_opencv/"
-    )
+    set(BIN_DIR "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/bin/")
 endif()
+pr_install_binary(BIN_DIR "${BIN_DIR}" WIN "opencv_imgproc470.dll" LIN "libopencv_imgproc.so" INSTALL_DIR "${INSTALL_PATH}")
+pr_install_binary(BIN_DIR "${BIN_DIR}" WIN "opencv_core470.dll" LIN "libopencv_core.so" INSTALL_DIR "${INSTALL_PATH}")
+pr_install_binary(BIN_DIR "${BIN_DIR}" WIN "opencv_imgcodecs470.dll" LIN "libopencv_imgcodecs.so" INSTALL_DIR "${INSTALL_PATH}")
