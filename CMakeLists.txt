@@ -24,9 +24,9 @@ target_include_directories(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_MODULE_LOCA
 target_include_directories(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_MODULE_LOCATION}/core/include")
 
 if(WIN32)
-    target_link_libraries(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/Release/${OS_LIB_BIN_PRE}opencv_imgproc470${OS_LIB_SHARED_EXT}")
-    target_link_libraries(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/Release/${OS_LIB_BIN_PRE}opencv_core470${OS_LIB_SHARED_EXT}")
-    target_link_libraries(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/Release/${OS_LIB_BIN_PRE}opencv_imgcodecs470${OS_LIB_SHARED_EXT}")
+    target_link_libraries(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/Release/${OS_LIB_BIN_PRE}opencv_imgproc4110${OS_LIB_SHARED_EXT}")
+    target_link_libraries(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/Release/${OS_LIB_BIN_PRE}opencv_core4110${OS_LIB_SHARED_EXT}")
+    target_link_libraries(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/Release/${OS_LIB_BIN_PRE}opencv_imgcodecs4110${OS_LIB_SHARED_EXT}")
 else()
     if(is_multi_config)
         target_link_libraries(${PROJ_NAME} PRIVATE "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/lib/Release/${OS_LIB_BIN_PRE}opencv_imgproc${OS_LIB_SHARED_EXT}")
