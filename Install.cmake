@@ -7,6 +7,5 @@ if(WIN32)
 else()
     set(BIN_DIR "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/bin/")
 endif()
-pr_install_binary(BIN_DIR "${BIN_DIR}" WIN "opencv_imgproc470.dll" LIN "libopencv_imgproc.so" INSTALL_DIR "${INSTALL_PATH}")
-pr_install_binary(BIN_DIR "${BIN_DIR}" WIN "opencv_core470.dll" LIN "libopencv_core.so" INSTALL_DIR "${INSTALL_PATH}")
-pr_install_binary(BIN_DIR "${BIN_DIR}" WIN "opencv_imgcodecs470.dll" LIN "libopencv_imgcodecs.so" INSTALL_DIR "${INSTALL_PATH}")
+
+pr_install_binaries(opencv INSTALL_DIR "${INSTALL_PATH}")
