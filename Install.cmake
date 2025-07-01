@@ -8,4 +8,6 @@ else()
     set(BIN_DIR "${DEPENDENCY_OPENCV_LIBRARY_LOCATION}/bin/")
 endif()
 
-pr_install_binaries(opencv INSTALL_DIR "${INSTALL_PATH}")
+if(UNIX)
+    pr_install_binaries(opencv INSTALL_DIR "${INSTALL_PATH}")
+endif()
