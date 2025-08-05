@@ -1,7 +1,7 @@
 include(${CMAKE_SOURCE_DIR}/cmake/pr_common.cmake)
 
 set(PROJ_NAME pr_opencv)
-pr_add_library(${PROJ_NAME} SHARED)
+pr_add_module(${PROJ_NAME} SHARED "modules/opencv/")
 
 pr_add_dependency(${PROJ_NAME} shared TARGET PUBLIC)
 
