@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: MIT
 
 #include "pr_module.hpp"
-#include <pragma/lua/luaapi.h>
-#include <pragma/console/conout.h>
 #include <util_image_buffer.hpp>
 #include <luainterface.hpp>
 #include <opencv2/opencv.hpp>
+
+import pragma.shared;
+
 static int to_cv_format(uimg::Format format)
 {
 	switch(format) {
