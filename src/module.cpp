@@ -1,9 +1,6 @@
 // SPDX-FileCopyrightText: (c) 2023 Silverlan <opensource@pragma-engine.com>
 // SPDX-License-Identifier: MIT
 
-#include "pr_module.hpp"
-#include <util_image_buffer.hpp>
-#include <luainterface.hpp>
 #include <opencv2/opencv.hpp>
 
 import pragma.shared;
@@ -45,10 +42,10 @@ static cv::Mat create_opencv_mat(const uimg::ImageBuffer &imgBuf) { return cv::M
 
 extern "C" {
 
-DLLEXPORT void pragma_initialize_lua(Lua::Interface &lua)
+PR_EXPORT void pragma_initialize_lua(Lua::Interface &lua)
 {
 	auto &libDemo = lua.RegisterLibrary("opencv");
-	libDemo[luabind::def(
+	libDemo[(luabind::def(
 	          "copy",
 	          +[](const uimg::ImageBuffer &psrc, uimg::ImageBuffer &dst, uint32_t x, uint32_t y, uint32_t w, uint32_t h) {
 		          auto &src = const_cast<uimg::ImageBuffer &>(psrc);
@@ -79,6 +76,6 @@ DLLEXPORT void pragma_initialize_lua(Lua::Interface &lua)
 		    std::swap(channels[0], channels[2]);
 		    cv::merge(channels, matIn);
 		    return cv::imwrite(filePath, matIn);
-	    })];
+	    }))];
 }
 };
