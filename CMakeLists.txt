@@ -8,7 +8,6 @@ pr_add_dependency(${PROJ_NAME} shared TARGET PUBLIC)
 find_package(opencv REQUIRED)
 pr_add_external_dependency(${PROJ_NAME} opencv LIBRARY)
 
-pr_add_headers(${PROJ_NAME} "include/")
-pr_add_sources(${PROJ_NAME} "src/")
+pr_init_module(${PROJ_NAME})
 
 pr_finalize(${PROJ_NAME})
