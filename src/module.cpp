@@ -46,17 +46,17 @@ PR_EXPORT void pragma_initialize_lua(Lua::Interface &lua)
 {
 	auto &libDemo = lua.RegisterLibrary("opencv");
 	libDemo[(luabind::def(
-	          "copy",
-	          +[](const uimg::ImageBuffer &psrc, uimg::ImageBuffer &dst, uint32_t x, uint32_t y, uint32_t w, uint32_t h) {
-		          auto &src = const_cast<uimg::ImageBuffer &>(psrc);
-		          dst.ClampBounds(x, y, w, h);
-		          auto srcMat = create_opencv_mat(src);
-		          auto dstMat = create_opencv_mat(dst);
+	           "copy",
+	           +[](const uimg::ImageBuffer &psrc, uimg::ImageBuffer &dst, uint32_t x, uint32_t y, uint32_t w, uint32_t h) {
+		           auto &src = const_cast<uimg::ImageBuffer &>(psrc);
+		           dst.ClampBounds(x, y, w, h);
+		           auto srcMat = create_opencv_mat(src);
+		           auto dstMat = create_opencv_mat(dst);
 
-		          cv::Rect srcRoi {0, 0, static_cast<int32_t>(w), static_cast<int32_t>(h)};
-		          cv::Rect dstRoi {static_cast<int32_t>(x), static_cast<int32_t>(y), static_cast<int32_t>(w), static_cast<int32_t>(h)};
-		          srcMat(srcRoi).copyTo(dstMat(dstRoi));
-	          }),
+		           cv::Rect srcRoi {0, 0, static_cast<int32_t>(w), static_cast<int32_t>(h)};
+		           cv::Rect dstRoi {static_cast<int32_t>(x), static_cast<int32_t>(y), static_cast<int32_t>(w), static_cast<int32_t>(h)};
+		           srcMat(srcRoi).copyTo(dstMat(dstRoi));
+	           }),
 	  luabind::def(
 	    "resize",
 	    +[](const uimg::ImageBuffer &img, uint32_t newWidth, uint32_t newHeight) {
