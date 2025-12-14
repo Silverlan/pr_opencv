@@ -5,40 +5,40 @@
 
 import pragma.shared;
 
-static int to_cv_format(uimg::Format format)
+static int to_cv_format(pragma::image::Format format)
 {
 	switch(format) {
-	case uimg::Format::R8:
+	case pragma::image::Format::R8:
 		return CV_8UC1;
-	case uimg::Format::RG8:
+	case pragma::image::Format::RG8:
 		return CV_8UC2;
-	case uimg::Format::RGB8:
+	case pragma::image::Format::RGB8:
 		return CV_8UC3;
-	case uimg::Format::RGBA8:
+	case pragma::image::Format::RGBA8:
 		return CV_8UC4;
 
-	case uimg::Format::R16:
+	case pragma::image::Format::R16:
 		return CV_16UC1;
-	case uimg::Format::RG16:
+	case pragma::image::Format::RG16:
 		return CV_16UC2;
-	case uimg::Format::RGB16:
+	case pragma::image::Format::RGB16:
 		return CV_16UC3;
-	case uimg::Format::RGBA16:
+	case pragma::image::Format::RGBA16:
 		return CV_16UC4;
 
-	case uimg::Format::R32:
+	case pragma::image::Format::R32:
 		return CV_32SC1;
-	case uimg::Format::RG32:
+	case pragma::image::Format::RG32:
 		return CV_32SC2;
-	case uimg::Format::RGB32:
+	case pragma::image::Format::RGB32:
 		return CV_32SC3;
-	case uimg::Format::RGBA32:
+	case pragma::image::Format::RGBA32:
 		return CV_32SC4;
 	}
-	throw std::runtime_error {"Unsupported image format " + std::to_string(umath::to_integral(format))};
+	throw std::runtime_error {"Unsupported image format " + std::to_string(pragma::math::to_integral(format))};
 }
 
-static cv::Mat create_opencv_mat(const uimg::ImageBuffer &imgBuf) { return cv::Mat {static_cast<int32_t>(imgBuf.GetHeight()), static_cast<int32_t>(imgBuf.GetWidth()), to_cv_format(imgBuf.GetFormat()), const_cast<void *>(imgBuf.GetData())}; }
+static cv::Mat create_opencv_mat(const pragma::image::ImageBuffer &imgBuf) { return cv::Mat {static_cast<int32_t>(imgBuf.GetHeight()), static_cast<int32_t>(imgBuf.GetWidth()), to_cv_format(imgBuf.GetFormat()), const_cast<void *>(imgBuf.GetData())}; }
 
 extern "C" {
 
@@ -47,8 +47,8 @@ PR_EXPORT void pragma_initialize_lua(Lua::Interface &lua)
 	auto &libDemo = lua.RegisterLibrary("opencv");
 	libDemo[(luabind::def(
 	           "copy",
-	           +[](const uimg::ImageBuffer &psrc, uimg::ImageBuffer &dst, uint32_t x, uint32_t y, uint32_t w, uint32_t h) {
-		           auto &src = const_cast<uimg::ImageBuffer &>(psrc);
+	           +[](const pragma::image::ImageBuffer &psrc, pragma::image::ImageBuffer &dst, uint32_t x, uint32_t y, uint32_t w, uint32_t h) {
+		           auto &src = const_cast<pragma::image::ImageBuffer &>(psrc);
 		           dst.ClampBounds(x, y, w, h);
 		           auto srcMat = create_opencv_mat(src);
 		           auto dstMat = create_opencv_mat(dst);
@@ -59,8 +59,8 @@ PR_EXPORT void pragma_initialize_lua(Lua::Interface &lua)
 	           }),
 	  luabind::def(
 	    "resize",
-	    +[](const uimg::ImageBuffer &img, uint32_t newWidth, uint32_t newHeight) {
-		    auto imgOut = uimg::ImageBuffer::Create(newWidth, newHeight, img.GetFormat());
+	    +[](const pragma::image::ImageBuffer &img, uint32_t newWidth, uint32_t newHeight) {
+		    auto imgOut = pragma::image::ImageBuffer::Create(newWidth, newHeight, img.GetFormat());
 		    auto matIn = create_opencv_mat(img);
 		    auto matOut = create_opencv_mat(*imgOut);
 		    cv::Size size {static_cast<int32_t>(newWidth), static_cast<int32_t>(newHeight)};
@@ -68,8 +68,8 @@ PR_EXPORT void pragma_initialize_lua(Lua::Interface &lua)
 		    return imgOut;
 	    }),
 	  luabind::def(
-	    "save", +[](const uimg::ImageBuffer &img, const std::string &filePath) {
-		    auto cpy = img.Copy(uimg::ImageBuffer::ToLDRFormat(img.GetFormat()));
+	    "save", +[](const pragma::image::ImageBuffer &img, const std::string &filePath) {
+		    auto cpy = img.Copy(pragma::image::ImageBuffer::ToLDRFormat(img.GetFormat()));
 		    auto matIn = create_opencv_mat(*cpy);
 		    std::vector<cv::Mat> channels;
 		    cv::split(matIn, channels);
