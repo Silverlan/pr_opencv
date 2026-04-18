@@ -35,7 +35,7 @@ static int to_cv_format(pragma::image::Format format)
 	case pragma::image::Format::RGBA32:
 		return CV_32SC4;
 	}
-	throw std::runtime_error {"Unsupported image format " + std::to_string(pragma::math::to_integral(format))};
+	throw std::runtime_error {"Unsupported image format " + pragma::util::to_string(pragma::math::to_integral(format))};
 }
 
 static cv::Mat create_opencv_mat(const pragma::image::ImageBuffer &imgBuf) { return cv::Mat {static_cast<int32_t>(imgBuf.GetHeight()), static_cast<int32_t>(imgBuf.GetWidth()), to_cv_format(imgBuf.GetFormat()), const_cast<void *>(imgBuf.GetData())}; }
