@@ -27,13 +27,13 @@ static int to_cv_format(pragma::image::Format format)
 		return CV_16UC4;
 
 	case pragma::image::Format::R32:
-		return CV_32SC1;
+		return CV_32FC1;
 	case pragma::image::Format::RG32:
-		return CV_32SC2;
+		return CV_32FC2;
 	case pragma::image::Format::RGB32:
-		return CV_32SC3;
+		return CV_32FC3;
 	case pragma::image::Format::RGBA32:
-		return CV_32SC4;
+		return CV_32FC4;
 	}
 	throw std::runtime_error {"Unsupported image format " + pragma::util::to_string(pragma::math::to_integral(format))};
 }
@@ -59,7 +59,7 @@ PR_EXPORT void pragma_initialize_lua(Lua::Interface &lua)
 	           }),
 	  luabind::def(
 	    "resize",
-	    +[](const pragma::image::ImageBuffer &img, uint32_t newWidth, uint32_t newHeight) {
+	    +[](const pragma::image::ImageBuffer &img, uint32_t newWidth, uint32_t newHeight) -> std::shared_ptr<pragma::image::ImageBuffer> {
 		    auto imgOut = pragma::image::ImageBuffer::Create(newWidth, newHeight, img.GetFormat());
 		    auto matIn = create_opencv_mat(img);
 		    auto matOut = create_opencv_mat(*imgOut);
